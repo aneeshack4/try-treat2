@@ -28,15 +28,6 @@ const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const TreatPlugin = require('treat/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = {
-  plugins: [
-    new TreatPlugin({
-      outputLoaders: [MiniCssExtractPlugin.loader]
-    }),
-    new MiniCssExtractPlugin()
-  ]
-};
-
 const postcssNormalize = require('postcss-normalize');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
@@ -544,7 +535,12 @@ module.exports = function(webpackEnv) {
       // makes the discovery automatic so you don't have to restart.
       // See https://github.com/facebook/create-react-app/issues/186
       isEnvDevelopment &&
-        new WatchMissingNodeModulesPlugin(paths.appNodeModules),
+        new WatchMissingNodeModulesPlugin(paths.appNodeModules),   
+        new TreatPlugin({
+          outputLoaders: [MiniCssExtractPlugin.loader]
+        }),
+        isEnvDevelopment &&
+        new MiniCssExtractPlugin(),
       isEnvProduction &&
         new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
